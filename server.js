@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 
 // Render dynamically assigns a port via process.env.PORT. 
-// It falls back to 3000 for local testing in VS Code.
 const PORT = process.env.PORT || 3000;
 
 // Trust the Render proxy to pass the correct client IP headers
@@ -10,7 +9,7 @@ app.set('trust proxy', true);
 
 // Main route to handle incoming visits
 app.get('/', (req, res) => {
-    // Read the client's IP address (handles proxies or direct connections)
+    // Read the client's IP address
     const clientIp = req.ip || req.headers['x-forwarded-for'] || req.socket.remoteAddress;
     
     // Log the event to the Render dashboard terminal
@@ -43,23 +42,4 @@ app.get('/', (req, res) => {
 // Start the server
 app.listen(PORT, () => {
     console.log(`Server successfully started. Listening on port ${PORT}`);
-});
-const express = require('express');
-const app = express();
-const PORT = 3000;
-
-// Middleware or route to handle incoming requests
-app.get('/', (req, res) => {
-    // Read standard headers or connection data for the client's IP
-    const clientIp = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
-    
-    // Log the IP address securely to the console
-    console.log(`[LOG] Incoming request from IP: ${clientIp} at ${new Date().toISOString()}`);
-    
-    // Send a standard response back to the client
-    res.send('Request received and logged successfully.');
-});
-
-app.listen(PORT, () => {
-    console.log(`Server is running locally on http://localhost:${PORT}`);
 });
